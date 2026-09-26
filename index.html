@@ -14,16 +14,17 @@
 <style>
 :root{
   --bg:#f3f6f8;--card:#fff;--text:#0f172a;--sub:#64748b;--line:#e2e8f0;
-  --primary:#0d9488;--primary-2:#0f766e;--primary-soft:#ccfbf1;
+  --primary:#0d9488;--primary-2:#0f766e;--primary-soft:#ccfbf1;--on-primary:#fff;--topbar:#0d9488;--on-topbar:#fff;--primary-shadow:rgba(13,148,136,.4);
   --win:#2563eb;--loss:#e11d48;--win-soft:#dbeafe;--loss-soft:#ffe4e6;
   --shadow:0 1px 2px rgba(15,23,42,.06),0 4px 14px rgba(15,23,42,.05);
 }
-@media (prefers-color-scheme:dark){:root{
+html.dark{
+  color-scheme:dark;
   --bg:#0b1220;--card:#131c2e;--text:#e5e7eb;--sub:#94a3b8;--line:#223047;
-  --primary:#2dd4bf;--primary-2:#5eead4;--primary-soft:#134e4a;
+  --primary:#2dd4bf;--primary-2:#5eead4;--primary-soft:#134e4a;--on-primary:#062a27;--topbar:#0f2a2a;--on-topbar:#e5e7eb;
   --win:#60a5fa;--loss:#fb7185;--win-soft:rgba(37,99,235,.22);--loss-soft:rgba(225,29,72,.22);
   --shadow:none;
-}}
+}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;background:var(--bg);color:var(--text)}
 body{font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP","Yu Gothic UI",sans-serif;font-size:15px;line-height:1.5}
@@ -35,14 +36,13 @@ button{cursor:pointer;background:none;border:0;padding:0}
 .app{display:flex;min-height:100vh}
 .side{display:none}
 main{flex:1;min-width:0}
-.topbar{position:sticky;top:0;z-index:20;background:var(--primary);color:#fff;padding:calc(env(safe-area-inset-top) + 10px) 16px 10px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-@media (prefers-color-scheme:dark){.topbar{background:#0f2a2a;color:var(--text)}}
+.topbar{position:sticky;top:0;z-index:20;background:var(--topbar);color:var(--on-topbar);padding:calc(env(safe-area-inset-top) + 10px) 16px 10px;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .topbar h1{font-size:17px;margin:0;font-weight:700;letter-spacing:.02em}
-.chip{font-size:12px;background:rgba(255,255,255,.18);padding:4px 10px;border-radius:999px;white-space:nowrap}
+.chip{font-size:12px;background:rgba(127,127,127,.2);color:inherit;padding:4px 10px;border-radius:999px;white-space:nowrap}
 .wrap{max-width:760px;margin:0 auto;padding:14px 16px calc(96px + env(safe-area-inset-bottom))}
 
 .card{background:var(--card);border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:var(--shadow);border:1px solid var(--line)}
-@media (prefers-color-scheme:light){.card{border-color:transparent}}
+html:not(.dark) .card{border-color:transparent}
 .card h3{font-size:14px;margin:0 0 10px;color:var(--sub);font-weight:600}
 .hero{text-align:center;padding:20px 16px}
 .hero .label{font-size:13px;color:var(--sub)}
@@ -82,7 +82,7 @@ main{flex:1;min-width:0}
 
 .kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:12px}
 .kpi{background:var(--card);border-radius:14px;padding:12px 14px;box-shadow:var(--shadow);border:1px solid var(--line)}
-@media (prefers-color-scheme:light){.kpi{border-color:transparent}}
+html:not(.dark) .kpi{border-color:transparent}
 .kpi .k{font-size:12px;color:var(--sub)}
 .kpi .v{font-size:19px;font-weight:800;font-variant-numeric:tabular-nums;margin-top:2px}
 .kpi .s{font-size:11.5px;color:var(--sub);font-variant-numeric:tabular-nums}
@@ -116,11 +116,9 @@ input[type=date],.field input,.amt input{width:100%;padding:10px 12px;border:1px
 input:focus{outline:2px solid var(--primary);outline-offset:-1px}
 .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
 .chips button{padding:6px 12px;border-radius:999px;background:var(--primary-soft);color:var(--primary-2);font-size:13px;font-weight:600}
-@media (prefers-color-scheme:dark){.chips button{color:var(--primary)}}
 
 .btn{display:block;width:100%;padding:12px;border-radius:12px;background:var(--bg);border:1px solid var(--line);font-weight:600;text-align:center;min-height:46px}
-.btn.primary{background:var(--primary);border-color:var(--primary);color:#fff}
-@media (prefers-color-scheme:dark){.btn.primary{color:#062a27}}
+.btn.primary{background:var(--primary);border-color:var(--primary);color:var(--on-primary)}
 .btn.danger{color:var(--loss)}
 .btn-col{display:grid;gap:8px;margin-top:10px}
 .note{font-size:12.5px;color:var(--sub);margin:10px 0 0}
@@ -138,15 +136,13 @@ ol.help li{margin-bottom:6px}
 .tabbar button{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 0 6px;font-size:10.5px;color:var(--sub)}
 .tabbar button.active{color:var(--primary)}
 .tabbar svg,.side svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.fab{position:fixed;right:18px;bottom:calc(76px + env(safe-area-inset-bottom));z-index:31;width:58px;height:58px;border-radius:50%;background:var(--primary);color:#fff;font-size:32px;line-height:1;box-shadow:0 6px 18px rgba(13,148,136,.4)}
-@media (prefers-color-scheme:dark){.fab{color:#062a27}}
+.fab{position:fixed;right:18px;bottom:calc(76px + env(safe-area-inset-bottom));z-index:31;width:58px;height:58px;border-radius:50%;background:var(--primary);color:var(--on-primary);font-size:32px;line-height:1;box-shadow:0 6px 18px var(--primary-shadow)}
 
 @media (min-width:900px){
   .side{display:flex;flex-direction:column;width:220px;flex:none;background:var(--card);border-right:1px solid var(--line);position:sticky;top:0;height:100vh;padding:18px 12px;gap:4px}
   .side .brand{font-weight:800;font-size:18px;padding:4px 12px 16px;color:var(--primary)}
   .side button{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;color:var(--sub);font-weight:600;text-align:left}
   .side button.active{background:var(--primary-soft);color:var(--primary-2)}
-  @media (prefers-color-scheme:dark){.side button.active{color:var(--primary)}}
   .tabbar{display:none}
   .fab{bottom:28px;right:28px}
   .wrap{padding-bottom:40px}
@@ -178,9 +174,21 @@ ol.help li{margin-bottom:6px}
 .day-list{background:var(--bg);border-radius:12px;padding:4px 12px;margin-bottom:6px}
 .day-list .row{border-color:var(--card)}
 
+.seg3{display:grid;grid-template-columns:repeat(3,1fr);background:var(--bg);border-radius:12px;padding:4px;gap:4px}
+.seg3 button{padding:9px;border-radius:9px;font-weight:700;color:var(--sub)}
+.seg3 button.on{background:var(--primary);color:var(--on-primary)}
+.themes{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px}
+.theme{border:2px solid var(--line);border-radius:14px;padding:8px 6px 7px;text-align:center;background:var(--card)}
+.theme.on{border-color:var(--primary)}
+.theme .sw{display:flex;height:30px;border-radius:9px;overflow:hidden;margin-bottom:5px;border:1px solid rgba(127,127,127,.2)}
+.theme .sw i{flex:1}
+.theme b{display:block;font-size:11.5px;line-height:1.3}
+.theme small{display:block;font-size:10px;color:var(--sub)}
 .toast{position:fixed;left:50%;bottom:calc(150px + env(safe-area-inset-bottom));transform:translateX(-50%);background:var(--text);color:var(--card);padding:9px 16px;border-radius:999px;font-size:13.5px;z-index:60;opacity:0;transition:opacity .2s;pointer-events:none;white-space:nowrap}
 .toast.show{opacity:1}
 </style>
+<style id="themeStyle"></style>
+<script>try{var m=(JSON.parse(localStorage.getItem('casino-ledger-v1'))||{}).mode||'auto';if(m==='dark'||(m==='auto'&&matchMedia('(prefers-color-scheme: dark)').matches))document.documentElement.classList.add('dark');}catch(e){}</script>
 </head>
 <body>
 <div class="app">
@@ -220,10 +228,10 @@ function load(){
     if (s && Array.isArray(s.entries)) return {
       entries: s.entries, rate: s.rate || null,
       manualRate: s.manualRate || null, useManual: !!s.useManual,
-      defaultCasino: s.defaultCasino || '', defaultMemo: s.defaultMemo || ''
+      defaultCasino: s.defaultCasino || '', defaultMemo: s.defaultMemo || '', theme: s.theme || 'teal', mode: s.mode || 'auto'
     };
   }catch(e){}
-  return { entries: [], rate: null, manualRate: null, useManual: false, defaultCasino: '', defaultMemo: '' };
+  return { entries: [], rate: null, manualRate: null, useManual: false, defaultCasino: '', defaultMemo: '', theme: 'teal', mode: 'auto' };
 }
 let state = load();
 function save(){
@@ -301,6 +309,58 @@ function casinos(){
   state.entries.forEach(e => { if (e.casino) c[e.casino] = (c[e.casino]||0) + 1; });
   return Object.keys(c).sort((a,b) => c[b]-c[a]);
 }
+
+
+/* ---------- themes ---------- */
+// [id, 名前, 番号, primary, 背景(ライト), ダーク時のprimary(任意)]
+const THEMES = [
+  ['teal',     'ティール',          '標準', '#0d9488', '#f3f6f8'],
+  ['s001',     'Subdued Neutrals',   '#001', '#ff8e3c', '#fff5e1'],
+  ['s002',     'Deep Elegance',      '#002', '#1b3a5c', '#f5f3ee', '#8fb4dc'],
+  ['s003',     'Serene Seascape',    '#003', '#0077b6', '#eef7fb'],
+  ['s004',     'Grounded Harmony',   '#004', '#5f7f64', '#f4f6f0'],
+  ['s005',     'Jewel Luxe',         '#005', '#9d0759', '#fbf2f6', '#f07ab5'],
+  ['s006',     'Engaging Contrast',  '#006', '#3d5afe', '#f3f5ff'],
+  ['s007',     'Vibrant and Lively', '#007', '#ff4d6d', '#fff4f6'],
+  ['s008',     'Light and Breezy',   '#008', '#4cc9f0', '#f0f9fd'],
+  ['s009',     'Versatile Expr.',    '#009', '#80b918', '#f5f9ec'],
+  ['s010',     'Dynamic Contrast',   '#010', '#111827', '#f3f4f6', '#e5e7eb'],
+  ['s011',     'Earthy Warmth',      '#011', '#bc6c25', '#faf5ee'],
+  ['s012',     'Depth and Luxury',   '#012', '#7d0000', '#f9f3f1', '#f38375'],
+  ['s013',     'Cool Clarity',       '#013', '#1860c7', '#f4f7fd', '#6ea8ff'],
+  ['s014',     'High Energy Hues',   '#014', '#ff4800', '#fff5ef'],
+  ['s015',     'Dark Allure',        '#015', '#5a189a', '#f4f0f8', '#c19ee0'],
+  ['s016',     'Soothing Pastels',   '#016', '#a78bdb', '#fbf8ff']
+];
+const hex2rgb = h => [1,3,5].map(i => parseInt(h.slice(i,i+2),16));
+const rgb2hex = a => '#' + a.map(v => Math.round(Math.max(0,Math.min(255,v))).toString(16).padStart(2,'0')).join('');
+const mix = (a, b, t) => rgb2hex(hex2rgb(a).map((v,i) => v + (hex2rgb(b)[i]-v)*t));
+function lum(h){ return hex2rgb(h).map(v => { v/=255; return v <= .03928 ? v/12.92 : Math.pow((v+.055)/1.055, 2.4); }).reduce((s,v,i) => s + v*[.2126,.7152,.0722][i], 0); }
+const onColor = h => lum(h) > .42 ? '#111827' : '#ffffff';
+function applyTheme(){
+  if (state.theme === 'teal') { $('#themeStyle').textContent = ''; setMeta('#0d9488'); return; }
+  const t = THEMES.find(x => x[0] === state.theme) || THEMES[0];
+  const [,,, p, bg, pdOpt] = t;
+  const pd = pdOpt || (lum(p) < .12 ? mix(p, '#ffffff', .45) : p);
+  const [r,g,b] = hex2rgb(p);
+  const light = {
+    '--primary': p, '--primary-2': lum(p) > .35 ? mix(p, '#000000', .45) : p,
+    '--primary-soft': mix(p, '#ffffff', .84), '--on-primary': onColor(p),
+    '--topbar': p, '--on-topbar': onColor(p), '--primary-shadow': `rgba(${r},${g},${b},.4)`, '--bg': bg
+  };
+  const dark = {
+    '--primary': pd, '--primary-2': mix(pd, '#ffffff', .25), '--primary-soft': mix(pd, '#131c2e', .72),
+    '--on-primary': onColor(pd), '--topbar': mix(pd, '#0b1220', .78), '--on-topbar': '#e5e7eb', '--bg': '#0b1220'
+  };
+  const css = o => Object.entries(o).map(([k,v]) => `${k}:${v}`).join(';');
+  $('#themeStyle').textContent = `:root{${css(light)}}html.dark{${css(dark)}}`;
+  setMeta(p);
+}
+const darkMQ = window.matchMedia ? matchMedia('(prefers-color-scheme: dark)') : null;
+const isDark = () => state.mode === 'dark' || (state.mode === 'auto' && !!(darkMQ && darkMQ.matches));
+function applyMode(){ document.documentElement.classList.toggle('dark', isDark()); applyTheme(); }
+if (darkMQ) { const f = () => { if (state.mode === 'auto') applyMode(); }; darkMQ.addEventListener ? darkMQ.addEventListener('change', f) : darkMQ.addListener(f); }
+function setMeta(c){ if (isDark()) c = getComputedStyle(document.documentElement).getPropertyValue('--topbar').trim() || c; const m = document.querySelector('meta[name=theme-color]'); if (m) m.content = c; }
 
 /* ---------- UI state ---------- */
 const now = today();
@@ -549,6 +609,12 @@ function vSettings(){
     <label class="switch-row"><span>手動レートを使う</span><input type="checkbox" id="useManual" ${state.useManual ? 'checked' : ''}></label>
     <label class="field">手動レート（1 USD あたりの円）<input id="manualRate" inputmode="decimal" placeholder="例: 148.50" value="${state.manualRate || ''}"></label>
     <p class="note">円の金額はすべて、表示時点のレートで換算した参考値です。起動時とアプリに戻ったとき（3時間以上経過時）に自動で更新します。</p></section>
+  <section class="card"><h3>表示モード</h3>
+    <div class="seg3">${[['auto','自動'],['light','ライト'],['dark','ダーク']].map(([k,l]) => `<button data-act="mode" data-mode="${k}" class="${state.mode===k?'on':''}">${l}</button>`).join('')}</div>
+    <p class="note">「自動」は iPhone の外観設定（ライト／ダーク）に合わせます。</p></section>
+  <section class="card"><h3>テーマカラー</h3>
+    <div class="themes">${THEMES.map(t => `<button class="theme ${state.theme===t[0]?'on':''}" data-act="theme" data-id="${t[0]}"><span class="sw"><i style="background:${t[3]}"></i><i style="background:${t[4]}"></i></span><b>${esc(t[1])}</b><small>${t[2]}</small></button>`).join('')}</div>
+    <p class="note">配色は Spectrum.Art のカラースキームを参考にしています。</p></section>
   <section class="card"><h3>入力のデフォルト</h3>
     <label class="field">いつものカジノ<input id="defCasino" list="defCasinoList" value="${esc(state.defaultCasino)}" placeholder="例: Corona Casino"></label>
     <datalist id="defCasinoList">${casinos().map(c => `<option value="${esc(c)}">`).join('')}</datalist>
@@ -654,8 +720,10 @@ document.addEventListener('click', ev => {
       if (p === 'all') { const ds = state.entries.map(e => e.date).sort(); ui.from = ds[0] || now; ui.to = ds[ds.length-1] > now ? ds[ds.length-1] : now; }
       render(); break;
     }
+    case 'mode': state.mode = t.dataset.mode; save(); applyMode(); render(); break;
+    case 'theme': state.theme = t.dataset.id; save(); applyTheme(); render(); break;
     case 'rate-refresh': fetchRate(false); break;
-    case 'export-json': download(`casino-backup-${now.replace(/-/g,'')}.json`, JSON.stringify({ app:'casino-ledger', version:1, exportedAt:new Date().toISOString(), entries:state.entries, manualRate:state.manualRate, useManual:state.useManual, defaultCasino:state.defaultCasino, defaultMemo:state.defaultMemo }, null, 2), 'application/json'); break;
+    case 'export-json': download(`casino-backup-${now.replace(/-/g,'')}.json`, JSON.stringify({ app:'casino-ledger', version:1, exportedAt:new Date().toISOString(), entries:state.entries, manualRate:state.manualRate, useManual:state.useManual, defaultCasino:state.defaultCasino, defaultMemo:state.defaultMemo, theme:state.theme, mode:state.mode }, null, 2), 'application/json'); break;
     case 'import-json': $('#importFile').click(); break;
     case 'export-csv': {
       const rows = [['日付','収支(USD)','カジノ','メモ']].concat(state.entries.slice().sort((a,b) => a.date < b.date ? -1 : 1).map(e => [e.date, e.amount, e.casino||'', e.memo||'']));
@@ -711,6 +779,8 @@ $('#importFile').addEventListener('change', ev => {
       if (typeof j.useManual === 'boolean') state.useManual = j.useManual;
       if (typeof j.defaultCasino === 'string') state.defaultCasino = j.defaultCasino;
       if (typeof j.defaultMemo === 'string') state.defaultMemo = j.defaultMemo;
+      if (typeof j.theme === 'string') { state.theme = j.theme; applyTheme(); }
+      if (typeof j.mode === 'string') { state.mode = j.mode; applyMode(); }
       save(); render(); toast('復元しました');
     } catch (e) { toast('バックアップファイルを読み込めませんでした'); }
     finally { ev.target.value = ''; }
@@ -753,6 +823,7 @@ function maybeRefreshRate(){
 }
 document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') maybeRefreshRate(); });
 
+applyMode();
 render();
 maybeRefreshRate();
 })();
